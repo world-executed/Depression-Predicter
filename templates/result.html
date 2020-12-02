@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>预测结果</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+        <!--[if lte IE 8]><script src="{{ url_for('static',filename='css/ie/html5shiv.js') }}"></script><![endif]-->
+		<script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/jquery.dropotron.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/skel.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/skel-layers.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/init.js') }}"></script>
+		<noscript>
+			<link rel="stylesheet" href="{{ url_for('static',filename='css/skel.css') }}" />
+			<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
+            <link rel="shortcut icon" href="{{ url_for('static',filename='image/a4cp6-indft-001.ico') }}"/>
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="{{ url_for('static',filename='css/ie/v8.css') }}" /><![endif]-->
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/buttons.css') }}" />
+
+		<script>
+			window.onload=function () {
+				var MMD_score= {{result["score"]}};
+				var type;
+				var p_li=document.getElementById("result").getElementsByTagName("p");
+				if (MMD_score<0.5){
+					p_li[0].style.display='block';
+					type="无抑郁症";
+				}
+				else if (MMD_score<0.7){
+					p_li[1].style.display='block';
+					type="轻度抑郁症";
+				}
+				else if (MMD_score<0.9){
+					p_li[2].style.display='block';
+					type="中度抑郁症";
+				}
+				else{
+					p_li[3].style.display='block';
+					type="重度抑郁症";
+				}
+
+                MMD_score*=100;
+                MMD_score=MMD_score.toFixed(2)
+                console.log(MMD_score)
+
+
+
+				{#document.getElementById("score").innerText+=MMD_score+'%，有效记录数为：{{result["num"]}}';#}
+				document.getElementById("score").innerText+=MMD_score+'%，'+type+'。';
+                console.log('有效记录数为：{{result["num"]}}');
+
+
+			}
+
+		</script>
+	</head>
+	<body>
+
+		<!-- Header Wrapper -->
+			<div class="wrapper style1">
+			
+			<!-- Header -->
+				<div id="header">
+					<div class="container">
+	
+					</div>
+				</div>
+			</div>
+		
+		<!-- Main -->
+			<div id="main" class="wrapper style4">
+
+				<!-- Content -->
+				<div id="content" class="container">
+					<section>
+						<header class="major">
+							<h2>预测结果</h2>
+							<span id="score" class="byline">您的抑郁症评估分数为（数值越低抑郁症倾向越低）：</span>
+						</header>
+                        <h2>建议如下：</h2>
+                        <br>
+						<div id="result">
+							<p style="display:none;">您的抑郁症倾向很低，处于十分健康的状态。当然，为了保持良好的心态，可以多参加体育运动来放松身心，在情绪挤压的时候要及时选择合适的方式排解压力，可以听听音乐看看电影等。</p>
+							<p style="display:none;">
+                                对于轻度抑郁症，通常可以采用自我调节和药物治疗。自我调节，做到健康饮食、起居有规律、保持良好的心态、适当的运动，通过学习新技术，增加成就感。药物治疗包括去甲肾上腺素、5-羟色胺、谷氨酸相关药物及多巴胺等。
+<br>
+<br>
+饮食方法是所有治疗抑郁症的办法中，最容易让患者接受的了。医生建议有轻度抑郁的人多吃一些富含维生素B的食物，像粗粮、鱼等。他还让患者服一定剂量的复合维生素B。他认为这些都是人们容易缺乏的维生素。
+<br>
+<br>
+抑郁症患者平时需要注意工作不要太劳累，保证充足的睡眠，一般焦虑患者会晚睡，而已抑郁患者会早醒，一定要保证充足的睡眠，也能减少患者的病情。
+<br>
+<br>
+在生活中还要学会保持情绪的平和，不要给自己过大的压力，建议多和家人朋友进行沟通，通过做自己喜欢的事情来转移注意力。
+<br>
+<br>
+轻度抑郁症的治疗一般来说暂时先不用服用药物，因为药物还是会有一些副作用的发生，因为不是很严重的情况下，建议进行自我的调整，养成有规律的生活饮食方式，多一些正能量的乐观的向上的一些精神，培养自己的兴趣爱好，还是要将心中的一些不满的情绪或者是一些过多的压力及时的排泄出来。
+
+                            </p>
+							<p style="display:none;">
+                                对于中度抑郁的患者，需要口服药物治疗，首选五羟色胺再摄取抑制剂，比如盐酸帕罗西汀，氟西丁，西酞普兰，艾斯西酞普兰等，一般规律服药2-3周以后就能起效。患者不要随便停药换药，同时可以接受心理疏导，比如行为疗法，认知疗法，患者自身要学会调整身心，多与家人朋友交流，沟通。适当运动，减轻压力，保证睡眠，改善不良生活方式。
+<br>
+<br>
+吃黛力新缓解一下，平时要多到外面走一走，呼吸呼吸新鲜空气，保持心情舒畅，多做运动，晚上按时休息，不要熬夜，可以吃多蔬菜和水果，补充丰富的维生素。只有生活习惯改变了你的病才能很快的康复，注意一定要改变哦
+1、建立求生意识(这个真的很重要)：活下去，活下去，一定要想尽办法活下去，不要自杀，也不要自残，我很能理解那样的处境，那时的心理，自杀是种解脱，但是治好病同样也是中解脱不是吗?
+2、开始治病：心里要明白自己只是生病了，并不是什么绝症。生病了就去治，找个正规医院，找个信得过的医生，这边就能治。经过这个阶段之后，就会有发现，自己在慢慢的恢复，也不再那么的难受，对于一些事情也会感到开心，不好的情绪也也来越少，时间不会觉得那么的难熬。
+3、听医嘱：该吃药的就得吃药，该做心理辅导的就要做辅导，该复查的时候就要去复查，千万不可因为感觉好些了，就擅自停药，减轻药的剂量，或者不去复诊。抑郁症是个慢性病，易复发，所以不可擅自决定，听医嘱非常重要。
+4、尽可能的避免接触会造成负面情绪的事和物：消极的电影，不看;消极的歌，不听;让你消极的人，不接触，离得远远的。
+5、不要很长时间不出门：长时间的不出门，只会给我们带来负面的影响，所以不管怎样都要出去，哪怕是出个门丢个垃圾，能吹吹风，感觉的到自己。千万不要把自己限制在一个恶性循环里。
+6、保护自己：抑郁症并不是所有人能够理解的，有的人会嘲笑你，有的人会歧视你，不理会，不接触，躲的远远的。
+7、找一两个能聊得来，三观正，善良的朋友，没事的时候可以出去吃个饭，逛个街，聊点心里话。不用怕麻烦她们，更不用怕把负面情绪传递给她们，在抗抑郁的阶段，一切的正能量都是对我们有益的，如果她们愿意给就接着。
+8、记忆力减退：我想很多抑郁者都有过这样的经历，而我有个习惯，我会把开心的事，想要做的事，都记下来。
+9、坚持运动：运动的好处不仅可以帮助增加食欲，还能够提高些睡眠质量，所以要坚持。刚开始可能会比较难，慢慢来，只要坚持下来就好。
+10、提高抗压能力：抑郁症会摧毁掉我们的抗压能力，但是恢复后，这个是可以重建的，重建的过程会把自信也建立起来，但需要适应缓慢的过程，不可操之过急。
+11、可以吃些比较安神的食物，我推荐百合茶氨酸给大家，效果很不错，如果不知道可以去网上搜索关键词百合茶氨酸。
+饮食方面要注意
+<br>
+<br>
+中度抑郁症病人因情绪低落常拌有食欲下降，有些病人想通过拒食来达到消极身亡的目的，所以应注意加强病人的饮食护理。
+睡眠质量要提高
+<br>
+<br>
+中度抑郁症病人常拌有失眠，以入睡困难、早醒为多见。常表现入睡前忧心忡忡、焦虑不安。此时家人应多在起身边陪伴、安慰及劝导，这样能使病人产生一定的安全感，焦虑情绪也较易消除，对病人的睡眠也会有帮助。 加强心理护理，防止病人自杀
+<br>
+<br>
+对中度抑郁症状明显的病人往往都会出现自杀念头，必须留有人陪伴。陪伴必须较能体贴、关心患者并能体会病人的心境，通过与病人的交谈，从中诱导病人倾吐内心的隐秘或痛苦，了解知道病人最关心的，最需要的，最担心的是什么，从而尽量给予帮助解决。
+改善家庭成员之间的关系，分析去除不良的刺激因素
+<br>
+<br>
+家庭是一个集体，而病人只不过是集体中的一部分。一个不和睦的家庭，或某些成员的不良倾向、不良行为可以构成某些不良刺激因素，促使疾病的形成。在对中度抑郁症病人的治疗及护理上，应该让家庭成员一起分析、寻找病人发病根源，共同去除不良刺激因素，改善家庭成员间的关系，创造一个和睦的家庭环境，这是中度抑郁症病人家庭治疗及护理的关键。
+
+</p>
+							<p style="display:none;">重度抑郁症是抑郁症中比较严重的类型。患者往往有厌世观念、自残、自杀行为、或表现为抑郁性木僵。重度抑郁症患者大多需要住院治疗，可给予患者新型的抗抑郁剂治疗，比如百忧解（氟西汀）、瑞美隆（米氮平）等，有的需要合并应用抗精神病药物奥兰芝（奥氮平）、心情稳定剂碳酸锂治疗。对于药物疗效不满意的重度抑郁症患者，可以采取无抽搐电休克治疗。
+<br>
+<br>
+
+引起失眠的原因有很多种，如生活中能发现失眠的原因，并加以消除，便可缓解患者的失眠状况。但是如果失眠症比较严重，患者应该及早到专业的精神科医院进行诊治，以免因为治疗不及时而给患者造成更大的伤害。因此，要想避免失眠，最有效的方法就是养成按时睡觉、按时起床的习惯，这样才能建立起属于自己的生理时钟。有时候睡得太晚，早上还得按时起床；你还可以用放松训练或催眠CD，加强体育锻炼，放松身心，改善失眠症状，提高睡眠质量。
+<br>
+<br>
+注意休息，放松心情，回家后好好跟爸妈说。平时多听听欢快的音乐，舒缓情绪，好好跟家人沟通交流，释放内心的压力。多参加户外运动，积极锻炼身体，消除不良情绪。如果通过一段时间调整，还是改善不了症状，应及时到医院就诊治疗。
+</p>
+						</div>
+                        <a href="javascript:history.back(-1)"><button id="evaluater" class="button button-glow button-rounded button-action">重新测评</button></a>
+					</section>
+				</div>
+			</div>
+
+
+		<!-- Footer -->
+		<div id="footer">
+			<hr />
+			<div id="sign">
+				<p>Wenbin Wu</p>
+				<p>180910726@mail.dhu.edu.cn</p>
+			</div>
+		</div>
+
+	</body>
+</html>

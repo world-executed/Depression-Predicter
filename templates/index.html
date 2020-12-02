@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>抑郁症预测模型</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="{{ url_for('static',filename='css/ie/html5shiv.js') }}"></script><![endif]-->
+		<script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/jquery.dropotron.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/skel.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/skel-layers.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/init.js') }}"></script>
+		<noscript>
+			<link rel="stylesheet" href="{{ url_for('static',filename='css/skel.css') }}" />
+			<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
+
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="{{ url_for('static',filename='css/ie/v8.css') }}" /><![endif]-->
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/buttons.css') }}" />
+        <link rel="shortcut icon" href="{{ url_for('static',filename='images/a4cp6-indft-001.ico') }}"/>
+
+        <script src="{{ url_for('static',filename='js/recorder.js') }}"></script>
+		<script type="text/javascript">
+			var clkBool=false;
+			var clkCount=0
+			function CheckClk() {
+				var bt=document.getElementById("recorder")
+				if(clkBool==false){
+					clkBool=true;
+					bt.innerHTML="停止录音";
+
+					startRecording();
+					document.getElementById("record-statement").innerHTML="Recording...";
+				}
+				else{
+					clkBool=false;
+					bt.innerHTML="开始录音";
+					clkCount++;
+					stopRecording();
+					document.getElementById("record-statement").innerHTML=" ";
+					if(clkCount>4)
+						document.getElementById("record-count").innerHTML="共"+clkCount+"段录音";
+				}
+				console.log(clkCount)
+			};
+		</script>
+		<script>
+			function __log(e, data) {
+				console.log(e)
+			}
+
+			var audio_context;
+			var recorder;
+
+			function startUserMedia(stream) {
+				var input = audio_context.createMediaStreamSource(stream);
+				__log('Media stream created.');
+
+				// Uncomment if you want the audio to feedback directly
+				//input.connect(audio_context.destination);
+				//__log('Input connected to audio context destination.');
+
+				recorder = new Recorder(input);
+				__log('Recorder initialised.');
+			}
+
+			function startRecording() {
+				recorder && recorder.record();
+				__log('Recording...');
+			}
+
+			function stopRecording() {
+				recorder && recorder.stop();
+				__log('Stopped recording.');
+
+				// create WAV download link using audio data blob
+				createDownloadLink();
+				recorder.clear();
+			}
+
+			function createDownloadLink() {
+				recorder && recorder.exportWAV(function (blob) {
+					var url = URL.createObjectURL(blob);
+					var li = document.createElement('li');
+					var au = document.createElement('audio');
+					var hf = document.createElement('p');
+
+					au.controls = true;
+					au.src = url;
+
+					hf.innerHTML = new Date().toISOString() + '.wav';
+					li.appendChild(au);
+
+
+					var reader = new FileReader();
+
+					reader.onload = function (event) {
+						var content = reader.result;//内容就在这里
+						console.log(content.length);
+
+
+						var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+                        httpRequest.open('POST', 'http://127.0.0.1:5000/', true); //第二步：打开连接
+                        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+                        httpRequest.send(content);//发送请求 将情头体写在send中
+					};
+					reader.readAsDataURL(blob);
+
+
+
+					console.log(blob);
+
+
+					li.appendChild(hf);
+					recordingslist.appendChild(li);
+				});
+			}
+
+			window.onload = function init() {
+				try {
+					// webkit shim
+					window.AudioContext = window.AudioContext || window.webkitAudioContext;
+					navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+					window.URL = window.URL || window.webkitURL;
+
+					audio_context = new AudioContext;
+					__log('Audio context set up.');
+					__log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+				} catch (e) {
+					alert('No web audio support in this browser!');
+				}
+
+				navigator.getUserMedia({audio: true}, startUserMedia, function (e) {
+					__log('No live audio input: ' + e);
+				});
+			};
+		</script>
+
+	</head>
+	<body class="homepage">
+
+		<!-- Header Wrapper -->
+			<div class="wrapper style1">
+			
+			<!-- Header -->
+				<div id="header">
+					<div class="container">
+
+						<!-- Logo -->
+<!--							<h1><a href="#" id="logo">Solarize</a></h1>-->
+
+						<!-- Nav -->
+<!--							<nav id="nav">-->
+<!--								<ul>-->
+<!--									<li class="active"><a href="index.html">Home</a></li>-->
+<!--									<li>-->
+<!--										<a href="">Dropdown</a>-->
+<!--										<ul>-->
+<!--											<li><a href="#">Lorem ipsum dolor</a></li>-->
+<!--											<li><a href="#">Magna phasellus</a></li>-->
+<!--											<li><a href="#">Etiam dolore nisl</a></li>-->
+<!--											<li>-->
+<!--												<a href="">Phasellus consequat</a>-->
+<!--												<ul>-->
+<!--													<li><a href="#">Lorem ipsum dolor</a></li>-->
+<!--													<li><a href="#">Phasellus consequat</a></li>-->
+<!--													<li><a href="#">Magna phasellus</a></li>-->
+<!--													<li><a href="#">Etiam dolore nisl</a></li>-->
+<!--													<li><a href="#">Veroeros feugiat</a></li>-->
+<!--												</ul>-->
+<!--											</li>-->
+<!--											<li><a href="#">Veroeros feugiat</a></li>-->
+<!--										</ul>-->
+<!--									</li>-->
+<!--									<li><a href="left-sidebar.html">Left Sidebar</a></li>-->
+<!--									<li><a href="right-sidebar.html">Right Sidebar</a></li>-->
+<!--									<li><a href="result.html">No Sidebar</a></li>-->
+<!--								</ul>-->
+<!--							</nav>-->
+	
+					</div>
+				</div>
+				
+			<!-- Banner -->
+				<div id="banner">
+					<section class="container">
+						<h2>welcome</h2>
+						<span>EasyDL抑郁症预测模型</span>
+{#						<p>这是一段介绍</p>#}
+					</section>
+				</div>
+
+			</div>
+
+
+		<!-- Section One -->
+			<div class="wrapper style2">
+				<section class="container">
+					<div class="major">
+						<h1>获取录音</h1>
+{#						<span>#}
+{#							点击“开始录音”按钮进行录音，您可以根据右边的问题进行回答。#}
+{#							问题回答完后再次点击按钮可以结束录音。#}
+{#							回答问题时可以尽量用完整的句子回答，以便采集更多信息。#}
+{#							当回答超过10个问题后可以点击“开始测评”按钮进行测评。#}
+{#							请允许您的浏览器使用麦克风。#}
+{#						</span>#}
+                        <ol>
+                            <li>1.您可以根据右边提供的一系列问题进行回答，只需要在其中抽取想要回答的问题即可，不用全部回答。</li>
+                            <li>2.回答每一个问题前，先点击《开始录音》按钮，然后回答问题。每回答完一个问题再次点击《停止录音》按钮停止录音。</li>
+                            <li>3.然后选择下一个问题，准备好后再次点击《开始录音》按钮进行回答。</li>
+                            <li>4.每次录音结束后都会显示相应的录音记录，您可以点击播放检测录音是否正确、清晰。</li>
+                            <li>5.当录制10条左右录音后，可以点击最下方的《开始测评》按钮。</li>
+                            <li>6.跳转到预测界面后，即可看到您的抑郁症预测概率，并且提供了相应的建议以供参考。</li>
+                        </ol>
+						<p></p>
+
+
+					</div>
+
+
+					<div class="row double">
+						<div class="6u">
+							<header class="major">
+								<button id="recorder" class="button button-glow button-rounded button-action" onclick="CheckClk()">开始录音</button>
+								<span id="record-statement"></span>
+								<div class="record-items">
+									<h4>以下是录音结果：</h4>
+									<ul id="recordingslist"></ul>
+
+								</div>
+								<p id="record-count">&nbsp</p>
+
+							</header>
+						</div>
+						<div class="6u">
+							<h3>您可以试着回答以下问题:</h3>
+							<div class="question">
+								<ol class="default">
+									<li>请问您喜欢吃什么水果？为什么？（比如它有什么特点？如价格便宜，给人饱腹感之类的）</li>
+									<li>请问有什么爱吃的特色小吃？（如酸辣粉 牛肉米线 鸭血粉丝 鸡锁骨 老婆饼等等）</li>
+									<li>请问爱喝什么饮品？（如全套奶茶 百香果茶 可口可乐 雪碧 酸奶之类的）</li>
+									<li>请问平时有什么兴趣爱好？（如爱好运动 唱歌跳舞 探索未知之类的）</li>
+									<li>请问有什么喜欢的运动呢？（如马拉松 篮球 足球 羽毛球 网球 壁球 乒乓球 排球之类的）</li>
+									<li>请问平时有熬夜的习惯吗？晚上睡觉是倒头就睡还是过很久才能入睡？</li>
+									<li>请问您认为自己有哪些优点呢？</li>
+									<li>请问您觉得自己有什么缺点呢？</li>
+									<li>请问童年有什么难忘的经历让您感到很温暖呢？</li>
+									<li>请问有过什么痛苦悲伤的记忆吗？</li>
+									<li>请问您有特别喜欢或崇拜的偶像吗？是谁？为什么？</li>
+									<li>如果您在路上走被自己绊倒摔了一跤很疼，请问您会怎么做？</li>
+									<li>请问有做过什么让您至今难忘的梦境吗？</li>
+									<li>请问记忆中您去过最遥远的地方在哪里？有什么关于那个地方的回忆吗？</li>
+									<li>如果有来生，请问您想当男生还是女生？为什么？</li>
+									<li>请问您特别想去看看玩玩的地方在哪里？为什么？</li>
+									<li>请问您喜欢什么样的女孩/男孩？</li>
+									<li>请问您小时候的梦像是什么？</li>
+									<li>请问目前您最想去做的事情是什么？</li>
+								</ol>
+							</div>
+
+						</div>
+					</div>
+
+                    <a href="evaluate"><button id="evaluater" class="button button-glow button-rounded button-action">开始测评</button></a>
+				</section>
+			</div>
+
+
+	<!-- Footer -->
+		<div id="footer">
+<!--			<section class="container">-->
+<!--				<header class="major">-->
+<!--					<h2>Connect with us</h2>-->
+<!--					<span class="byline">Integer sit amet pede vel arcu aliquet pretium</span>-->
+<!--				</header>-->
+<!--				<ul class="icons">-->
+<!--					<li class="active"><a href="#" class="fa fa-facebook"><span>Facebook</span></a></li>-->
+<!--					<li><a href="#" class="fa fa-twitter"><span>Twitter</span></a></li>-->
+<!--					<li><a href="#" class="fa fa-dribbble"><span>Pinterest</span></a></li>-->
+<!--					<li><a href="#" class="fa fa-google-plus"><span>Google+</span></a></li>-->
+<!--				</ul>-->
+<!--				<hr />-->
+<!--			</section>-->
+
+			<!-- Copyright -->
+			<hr />
+				<div id="sign">
+					<p>Wenbin Wu</p>
+					<p>180910726@mail.dhu.edu.cn</p>
+				</div>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5652997c-7e64-495c-b9ef-e84549f2e6f8" name="yolohalo" url="http://139.224.52.207">
+        <fileTransfer rootFolder="/home" accessType="SFTP" host="139.224.52.207" port="22" sshConfigId="c451d856-85e7-48f8-af59-aad64a47be07" sshConfig="root@139.224.52.207:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
